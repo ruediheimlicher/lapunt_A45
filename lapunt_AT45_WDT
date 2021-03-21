@@ -1,0 +1,50 @@
+#include <avr/sleep.h>
+#include <avr/wdt.h>
+
+#define ledPin 4
+
+
+volatile bool statusLED = LOW;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+
+  //Setzen des Registers fuer Watchdog Time-out Interrupt
+  cli();
+  wdt_reset(); // Reset Watchdog Timer
+  MCUSR &= ~(1 << WDRF); //Ruecksetzen des Watchdog System Reset Flag
+  WDTCR = (1 << WDCE); //Watchdog Change Enable setzen
+  WDTCR = (1 << WDP3); //Watchdog Zyklus = 4 s
+  WDTCR |= (1 << WDIE); //Watchdog Timeout Interrupt Enable setzen
+  sei();
+  gotoSleep();
+}
+
+void loop() {
+  if (statusLED)
+  {
+    statusLED = LOW;
+    digitalWrite(ledPin, HIGH);
+    delay(2000);
+    digitalWrite(ledPin, LOW);
+    gotoSleep();
+  }
+}
+
+//Attiny in den Schlafmodus setzen
+void gotoSleep()
+{
+   MCUCR |= (1 << SM1) & ~(1 << SM0); //Sleep-Modus = Power Down
+  MCUCR |= (1 << SE); //Sleep Enable setzen
+  sleep_cpu(); //Schlafe ....
+  MCUCR &= ~(1 << SE); //Sleep Disable setzen
+}
+
+ISR(WDT_vect)
+{
+  statusLED = HIGH;
+}
+
+
+
+Mehr Infos: https://arduino-projekte.webnode.at/meine-projekte/attiny-im-schlafmodus/wecken-mit-wdt/
