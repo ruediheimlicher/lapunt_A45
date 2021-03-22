@@ -11,11 +11,7 @@
 #include "defines.h"
 #include <avr/power.h>
 
-//#include "lcd.c"
-
-uint16_t loopCount0=0;
-uint16_t loopCount1=0;
-uint16_t loopCount2=0;
+//uint16_t loopCount0=0;
 
 #define OSZIPORT   PORTB      // Eingang fuer Oszi
 #define OSZIDDR   DDRB
@@ -134,12 +130,12 @@ void main (void)
             //  OSZIATOG;
             if (! (ThermoStatus & (1<<RELAIS_ON))) // Status noch nicht gesetzt
             { 
-                ThermoStatus |= (1<<RELAIS_ON); //Zustand merken
+               ThermoStatus |= (1<<RELAIS_ON); //Zustand merken
                ThermoStatus &= ~(1<<RELAIS_OFF);
                RELAIS_PORT |= (1<<RELAIS_ON); // ON-Spule EIN
                _delay_ms(200);
                RELAIS_PORT &= ~(1<<RELAIS_ON); // ON-Spule AUS
-             }
+            }
          }
          else
          {
