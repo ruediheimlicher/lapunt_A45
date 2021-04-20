@@ -43,8 +43,11 @@
 #define RELAIS_DDR   DDRB
 #define RELAIS_PIN   PINB
 
-#define RELAIS_ON 3
-#define RELAIS_OFF 4
+//#define RELAIS_ON 3
+//#define RELAIS_OFF 4
+
+#define RELAIS_ON 4
+#define RELAIS_OFF 3
 
 #define RELAIS_ENABLE   2
 
